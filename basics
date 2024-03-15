@@ -1,0 +1,124 @@
+using System;
+
+class Student
+{
+    public string Name { get; set; }
+    public double ScienceGrade { get; set; }
+    public double MathGrade { get; set; }
+    public double EnglishGrade { get; set; }
+
+    public double AverageGrade
+    {
+        get { return (ScienceGrade + MathGrade + EnglishGrade) / 3.0; }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Welcome to the Student Grades System!");
+
+        Console.Write("Enter total students: ");
+        int totalStudents = int.Parse(Console.ReadLine());
+
+        Student[] students = new Student[totalStudents];
+
+        int choice;
+        do
+        {
+            Console.WriteLine("[1] Enroll Students");
+            Console.WriteLine("[2] Enter Student Grades");
+            Console.WriteLine("[3] Show Student Grades");
+            Console.WriteLine("[4] Show Top Student");
+            Console.WriteLine("[5] Exit");
+            Console.Write("Enter Choice: ");
+            choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    EnrollStudents(students);
+                    break;
+                case 2:
+                    EnterStudentGrades(students);
+                    break;
+                case 3:
+                    ShowStudentGrades(students);
+                    break;
+                case 4:
+                    ShowTopStudent(students);
+                    break;
+                case 5:
+                    Console.WriteLine("Bye!");
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice! Please enter again.");
+                    break;
+            }
+
+        } while (choice != 5);
+    }
+
+    static void EnrollStudents(Student[] students)
+    {
+        for (int i = 0; i < students.Length; i++)
+        {
+            Console.Write("Enter student name: ");
+            string name = Console.ReadLine();
+
+            students[i] = new Student { Name = name };
+
+            if (i < students.Length - 1)
+            {
+                Console.Write("Enter Again [Y/N]: ");
+                char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                Console.WriteLine();
+                if (choice != 'Y')
+                    break;
+            }
+        }
+    }
+
+    static void EnterStudentGrades(Student[] students)
+    {
+        foreach (var student in students)
+        {
+            Console.WriteLine($"Student: {student.Name}");
+            Console.Write("Enter grade for Science: ");
+            student.ScienceGrade = double.Parse(Console.ReadLine());
+            Console.Write("Enter grade for Math: ");
+            student.MathGrade = double.Parse(Console.ReadLine());
+            Console.Write("Enter grade for English: ");
+            student.EnglishGrade = double.Parse(Console.ReadLine());
+
+            Console.Write("Enter Again [Y/N]: ");
+            char choice = char.ToUpper(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+            if (choice != 'Y')
+                break;
+        }
+    }
+
+    static void ShowStudentGrades(Student[] students)
+    {
+        Console.WriteLine("Student Grades");
+        Console.WriteLine("Name\t\tScience\tMath\tEnglish\tAve.");
+        foreach (var student in students)
+        {
+            Console.WriteLine($"{student.Name}\t\t{student.ScienceGrade}\t{student.MathGrade}\t{student.EnglishGrade}\t{student.AverageGrade}");
+        }
+    }
+
+    static void ShowTopStudent(Student[] students)
+    {
+        Student topStudent = students[0];
+        foreach (var student in students)
+        {
+            if (student.AverageGrade > topStudent.AverageGrade)
+                topStudent = student;
+        }
+
+        Console.WriteLine($"Top Student: {topStudent.Name}");
+    }
+}
